@@ -8,7 +8,7 @@
         <div class="col-md-8 clearfix"> 
             <md-button class="md-raised btn-w-md md-primary changeClick" ng-click="backClick()">返回</md-button><div class="divider"></div>
         </div>
-        <div class="col-md-12" ng-show="isShow==1">
+        <div class="col-md-12" >
             <div class="row">
                         <div class="col-md-2"></div>
                          <div class="col-md-4">
@@ -26,124 +26,86 @@
                                     <form name="userForm" class="userForm">
 
                                         <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">头像：</label>
-                                            <div class="col-sm-2">
-                                                <img class="showImage scaleImg" src="{{user.userIcon}}" alt="" >
+                                            <label for="" class="col-sm-3 control-label">名称：</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" class="userName" ng-model="parking.name">
                                             </div>
                                         </div>
 
-                                        <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">用户Id：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="userId" ng-model="user.userId" ng-disabled="true">
-                                            </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">用户账号：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="userId" ng-model="user.userName" ng-disabled="true">
-                                            </div>
-                                        </div>
                                         <!-- <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">用户密码：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="userPsd" ng-model="user.password" ng-disabled="true">
-                                            </div>
-                                        </div> -->
-
-                                       <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">用户名称：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="nickName" ng-model="user.nickName" ng-disabled="true">
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">用户等级：</label>
-                                            <div class="col-sm-9">
-                                                  <input class="form-control" class="level" ng-model="user.level" ng-disabled="true">
-                                            </div>
-                                        </div> -->
-                                        <!-- <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">姓名：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="realName" ng-model="user.userName" ng-disabled="true">
-                                            </div>
-                                        </div> -->
-                                        <!-- <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">年龄：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="mobile" ng-model="user.age" ng-disabled="true">
-                                            </div>
-                                        </div> -->
-                                         <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">性别：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="gender" ng-model="user.gender" ng-disabled="true">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group clearfix">
                                             <label for="" class="col-sm-3 control-label">地址：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="vipType" ng-model="user.address" ng-disabled="true">
+                                            <div class="col-sm-3">
+                                                <select ng-model="parking.provinceId" ng-change="getCity(provinceId)" ng-options="province.provinceCode as province.provinceName for province in provinces">
+                                                </select>
                                             </div>
-                                        </div>
-                                        
 
-                                        <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">用户类型：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="createdDate" ng-model="user.userType" ng-disabled="true">
+                                            <div class="col-sm-3">
+                                                <select ng-model="cityId" ng-change="getArea(cityId)">
+                                                    <option value="">请选择</option>
+                                                    <option value="{{city.cityCode}}" ng-repeat="city in cities">{{city.cityName}}</option>
+                                                </select>
                                             </div>
-                                        </div>
 
-
-                                        <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">用户注册时间：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="lastLoginTime" ng-model="user.createdDate" ng-disabled="true">
+                                            <div class="col-sm-3">
+                                                <select ng-model="areaId" ng-options="areaId as area.areaCode for area in areas">
+                                                    
+                                                </select>
                                             </div>
-                                        </div>
+                                        </div> -->
 
-                                        <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">最后登录时间：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="lastLoginTime" ng-model="user.lastLoginDate" ng-disabled="true">
-                                            </div>
-                                        </div>
-
-                                       
                                         <!-- <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">头像：</label>
-                                            <div class="col-sm-2">
-                                                <img class="showImage scaleImg" src="{{user.userIcon}}" alt="" >
-                                            </div>
-                                        </div> -->
-                                        <!-- <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">视频：</label>
+                                            <label for="" class="col-sm-3 control-label">图片：</label>
                                             <div class="col-sm-9">
-                                              
-                                                <video ng-click="videoClick()" ng-if="videoImg" class="myVideo" ng-src="{{videoUrl(user.approveVideoUrl)}}" width="320" height="240">
-                                                </video>
-                                            </div>
-                                           
-                                        </div> -->
-
-
-                                         
-                                        <!--  <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">身份证号：</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" class="idNumber" ng-model="user.idNumber" ng-disabled="true">
+                                                <input type="file" class="bannerFile" ng-model="banner.file" accept="image/*" multiple ng-submit="doUploadPhoto()" onchange="angular.element(this).scope().doUploadPhoto(this)">
+                                                <ul class="img-list"  style="height: 100px;"> </ul>
                                             </div>
                                         </div>
+ -->
                                         <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">银行卡号：</label>
+                                            <label for="" class="col-sm-3 control-label">编号：</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control" class="bankCard" ng-model="user.bankCard" ng-disabled="true">
+                                                <input class="form-control" class="userPsd" ng-model="parking.number">
                                             </div>
-                                        </div> -->
+                                        </div>
+
+                                        <div class="form-group clearfix">
+                                            <label for="" class="col-sm-3 control-label">电话：</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" class="userPsd" ng-model="parking.mobile">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group clearfix">
+                                            <label for="" class="col-sm-3 control-label">经营人：</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" class="userPsd" ng-model="parking.operator">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group clearfix">
+                                            <label for="" class="col-sm-3 control-label">登录密码：</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" class="userPsd" ng-model="parking.password">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group clearfix">
+                                            <label for="" class="col-sm-3 control-label">每分钟多少钱：</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" class="userPsd" ng-model="parking.money">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group clearfix">
+                                            <label for="" class="col-sm-3 control-label">网址：</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" class="userPsd" ng-model="parking.webSite">
+                                            </div>
+                                        </div>
+
+                                         <div layout layout-sm='column' class="changeConfirm add-btn">
+                                            <md-button class="md-raised btn-w-md md-primary" ng-click="getJson()">确定修改</md-button><div class="divider"></div>
+                                        </div>
 
                                     </form>
 

@@ -107,18 +107,13 @@
 
     //获取用户列表
     function getUserList(pageNum, pageSize){
-        $http.post('http://localhost:8080/parking-server/' + 'user/getUserList.do',{},{params:{
-            userId:$scope.userId,
-            nickName:$scope.nickName,
-            mobile:$scope.userName,
-            gender:$scope.gender,
-            userType:$scope.userType,
+        $http.post('http://localhost:8080/parking-server/' + 'parking/getParkingList.do',{},{params:{
             pageNum:pageNum,
-            pageSize:pageSize
+            pageSize:pageSize,
+            mobile:$scope.mobile
         }}).success(function (data)  {
          if (data.code == 0) {
            $scope.userLists=data.result;
-           console.log("xsxs"+$scope.userLists);
            $scope.stores=data.result;
            $scope.user=data.result;
            $scope.currentPageStores = data.result;
@@ -236,7 +231,7 @@
                 init = function() {
                     console.log($scope.numPerPage);
                         console.log($scope.vipType);
-                    $http.post('http://localhost:8080/parking-server/' + 'user/getUserList.do',{},{params:{
+                    $http.post('http://localhost:8080/parking-server/' + 'parking/getParkingList.do',{},{params:{
                         pageNum:1,
                         pageSize:$scope.numPerPage
                     }}).success(function (data) {
@@ -638,18 +633,18 @@ $scope.deleteList = function(){
             $scope.showConfirm = function() {
                 // 确定
                 var confirm = $mdDialog.confirm()
-                .title('是否确定删除该条用户信息')
+                .title('是否确定删除')
                             // .ariaLabel('Lucky day')
                             // .targetEvent(ev)
                             .ok('确定')
                             .cancel('取消');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    $http.post("http://localhost:8080/parking-server/"+"user/deleteUserById.do?",{},{params:{
-                        userId:id
+                    $http.post("http://localhost:8080/parking-server/"+"parking/deleteParkingById.do?",{},{params:{
+                        parkingId:id
                     }}).success(function (data){
                         if(data.code == 0){
-                            $scope.showAlert("删除用户成功");
+                            $scope.showAlert("删除成功");
                             $(".delete-"+id).css("display","none");
                             $scope.total--;
                         } else {
@@ -800,34 +795,83 @@ $scope.deleteList = function(){
             )
         }
 
+        $http.post("http://localhost:8080/parking-server/"+"province/getProvinceList.do?",{},{params:{
+                    }}).success(function (data){
+                        if(data.code == 0){
+                            $scope.provinces=data.result;
+                            // console.log($scope.provinces)
+                        } else {
+                            $scope.showAlert1(data.message)
+                        }
+
+                    });
+
+        $scope.getCity=function(provinceCode){
+            $http.post("http://localhost:8080/parking-server/"+"province/getCityByProvinceCode.do?",{},{params:{
+                provinceCode:provinceCode
+                    }}).success(function (data){
+                        if(data.code == 0){
+                            $scope.cities=data.result;
+                        } else {
+                            $scope.showAlert1(data.message)
+                        }
+
+                    });
+        }
+
+        $scope.getArea=function(cityCode){
+            $http.post("http://localhost:8080/parking-server/"+"province/getAreaByCityCode.do?",{},{params:{
+                cityCode:cityCode
+                    }}).success(function (data){
+                        if(data.code == 0){
+                            $scope.areas=data.result;
+                        } else {
+                            $scope.showAlert1(data.message)
+                        }
+
+                    });
+        }
+
+
+
 
         $scope.userId = $location.search().id;   //获取用户id
         console.log("id="+$scope.userId);
         //根据用户id获取用户详细信息
-        $http.post('http://localhost:8080/parking-server/' + 'user/getUserById.do',{},{params:{
-            userId:$scope.userId   //用户id
+        $http.post('http://localhost:8080/parking-server/' + 'parking/getParkingById.do',{},{params:{
+            parkingId:$scope.userId   //用户id
         }}).success( function (data){   
             if(data.code == 0){
-                $scope.user = data.result;
-                console.log($scope.user);
-                if ($scope.user.gender==1) {
-                    $scope.user.gender="男";
-                }else if($scope.user.gender==2){
-                    $scope.user.gender="女";
-                }
-
-                if ($scope.user.userType==1) {
-                    $scope.user.userType="普通用户";
-                }else if ($scope.user.userType==2){
-                    $scope.user.userType="企业用户";
-                }else{
-                    $scope.user.userType="Vip用户";
-                }
-                
+                // $scope.parking = data.result;
+                $scope.parking=data.result.parking;
+                $scope.images=data.result.images;
+                console.log($scope.parking);
             } else {
                 $scope.showAlert(data.message);
             }
         });
+
+
+        $scope.getJson=function(){
+                // var json={"userId":1,"realName":"cjhen","address":{"province":"江苏省"}};
+                $.ajax({
+                    type: "POST",
+                    url: " http://localhost:8080/parking-server/parking/modifyParking.do",
+                    contentType: "application/json; charset=utf-8",
+                    data: angular.toJson($scope.parking),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            $scope.showAlert("修改成功");
+                        }else{
+                            $scope.showAlert("修改失败");
+                        }
+                    },
+                    error: function (message) {
+                        alert("数据提交失败");
+                    }
+                });
+            }
 
 
        
@@ -1956,6 +2000,10 @@ $scope.deleteList = function(){
             }
         }
 
+        $scope.doUploadPhoto = function(element) {
+            $scope.imageFileObj = element.files;
+        }
+
 
         $scope.user = {userName:'', mobile:'', code:'',vipType:'',sex:''};
 
@@ -2048,18 +2096,31 @@ $scope.deleteList = function(){
 
              // 确定
                           var confirm = $mdDialog.confirm()
-                          .title('是否确定删除用户')
+                          .title('是否确定添加')
                             // .ariaLabel('Lucky day')
                             // .targetEvent(ev)
-                            .ok('确定删除')
-                            .cancel('取消删除');
+                            .ok('确定')
+                            .cancel('取消');
 
                             $mdDialog.show(confirm).then(function() {
-                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"parking/addParking.do";// 接收上传文件的后台地址
-                console.log($scope.selected);
-                var temp = "";
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"parking/addParking.do";
 
                 var form = new FormData();
+                form.append("name",$scope.name);
+                form.append("number",$scope.number);
+                form.append("provinceId",$scope.provinceId);
+                form.append("cityId",$scope.cityId);
+                form.append("areaId",$scope.areaId);
+                form.append("mobile",$scope.mobile);
+                form.append("operator",$scope.operator);
+                form.append("password",$scope.password);
+                form.append("money",$scope.money);
+                form.append("webSite",$scope.webSite);
+                for (var i = $scope.imageFileObj.length - 1; i >= 0; i--) {
+                    form.append("images",$scope.imageFileObj[i]);
+                }
+                
+
 
                     var xhr = new XMLHttpRequest();
                     var response;
@@ -2067,18 +2128,15 @@ $scope.deleteList = function(){
                     xhr.send(form);
                     xhr.onreadystatechange = doResult;
                     function doResult() {
-                        if(xhr.readyState == 4  && xhr.status == 200){
-                            $scope.showAlert("添加成功");
-                            for(var i in $scope.selected){
-                                temp = i;
-                                if ($scope.selected[temp]==true) {
-                                    $(".delete-"+temp).css("display","none");
-                                    $scope.total--;
-                                }
-                                
-                                
-                            }
 
+                        if(xhr.readyState == 4  && xhr.status == 200){
+                            var data=eval("("+xhr.responseText+")");
+                            if (data.code==0) {
+                                $scope.showAlert("添加成功");
+                            }else{
+                                $scope.showAlert(data.message);
+                            }
+                            
                         } else if(xhr.readyState == 4 && xhr.status != 200){
                          // $scope.showAlert(xhr.message);
                          $scope.showAlert("添加失败");

@@ -113,7 +113,7 @@
         $scope.expertId = $location.search().id;   //获取用户id
         // console.log("id="+$scope.expertId);
         //根据用户id获取用户详细信息
-        $http.post('http://localhost:8080/blue-server/' + 'skill/getSkillById.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'skill/getSkillById.do',{},{params:{
             skillId:$scope.expertId   //用户id
         }}).success( function (data){   
             if(data.code == 0){
@@ -125,7 +125,7 @@
         });
 
         // //技能列表
-        // $http.post("http://localhost:8080/blue-server/"+"skill/getSkillList.do?",{},{params:{
+        // $http.post("http://localhost:8080/parking-server/"+"skill/getSkillList.do?",{},{params:{
         //                 pageNum:1,
         //                 pageSize:100
         //             }}).success(function (data){
@@ -157,7 +157,7 @@
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"skill/modifySkill.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"skill/modifySkill.do";// 接收上传文件的后台地址
 
                 var form = new FormData();
                 
@@ -225,7 +225,7 @@
                                 .ok('确定')
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
-            $http.post('http://localhost:8080/blue-server/' + 'expert/unbindingDecedent.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'expert/unbindingDecedent.do',{},{params:{
             expertId:$scope.expertId,  //用户id
             decedentId:decedentId
         }}).success( function (data){   
@@ -253,7 +253,7 @@
                                 .ok('确定')
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
-            $http.post('http://localhost:8080/blue-server/' + 'expert/restPassword.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'expert/restPassword.do',{},{params:{
             expertId:$scope.expertId  //用户id
         }}).success( function (data){   
             if(data.code == 0){  //解除成功
@@ -346,7 +346,7 @@
 
 
         //技能列表
-        // $http.post("http://localhost:8080/blue-server/"+"skill/getSkillList.do?",{},{params:{
+        // $http.post("http://localhost:8080/parking-server/"+"skill/getSkillList.do?",{},{params:{
         //                 pageNum:1,
         //                 pageSize:100
         //             }}).success(function (data){
@@ -361,7 +361,7 @@
 
         $scope.sendCode=function(mobile){
             console.log(mobile);
-            $http.post("http://localhost:8080/blue-server/"+"expert/genAuthCode.do?",{},{params:{
+            $http.post("http://localhost:8080/parking-server/"+"expert/genAuthCode.do?",{},{params:{
                         mobile:mobile
                     }}).success(function (data){
                         if(data.code == 0){
@@ -393,7 +393,7 @@
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"skill/addSkill.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"skill/addSkill.do";// 接收上传文件的后台地址
 
                 var form = new FormData();
                 form.append("content",$scope.content);
@@ -466,7 +466,7 @@
 
 
 
-                    $http.post("http://localhost:8080/blue-server/"+"expert/addExpert.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"expert/addExpert.do?",{},{params:{
                         mobile:$scope.expert.mobile,
                         expertName:$scope.expert.expertName,
                         code:$scope.expert.code,
@@ -568,7 +568,7 @@
 
     //获取用户列表
     function getExpertList(pageNum, pageSize){
-        $http.post('http://localhost:8080/blue-server/' + 'skill/getSkillList.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'skill/getSkillList.do',{},{params:{
             pageNum:pageNum,
             pageSize:pageSize
         }}).success(function (data)  {
@@ -691,7 +691,7 @@
                 init = function() {
                     console.log($scope.numPerPage);
                         console.log($scope.vipType);
-                    $http.post('http://localhost:8080/blue-server/' + 'skill/getSkillList.do',{},{params:{
+                    $http.post('http://localhost:8080/parking-server/' + 'skill/getSkillList.do',{},{params:{
                         pageNum:1,
                         pageSize:$scope.numPerPage
                     }}).success(function (data) {
@@ -899,9 +899,9 @@ $scope.exportExcel = function(){
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
 
-                var url="http://localhost:8080/blue-server/"+"expert/exportExcel.do?";
+                var url="http://localhost:8080/parking-server/"+"expert/exportExcel.do?";
 
-                // var modifyTopicUrl ="http://localhost:8080/blue-server/"+"expert/exportExcel.do";// 接收上传文件的后台地址
+                // var modifyTopicUrl ="http://localhost:8080/parking-server/"+"expert/exportExcel.do";// 接收上传文件的后台地址
                 // console.log($scope.selected);
                 // var temp = "";
 
@@ -977,7 +977,7 @@ $scope.deleteList = function(){
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"expert/deleteExpertBatch.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"expert/deleteExpertBatch.do";// 接收上传文件的后台地址
                 console.log($scope.selected);
                 var temp = "";
 
@@ -1100,7 +1100,7 @@ $scope.deleteList = function(){
                             .cancel('取消');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    $http.post("http://localhost:8080/blue-server/"+"skill/deleteSkillById.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"skill/deleteSkillById.do?",{},{params:{
                         skillId:id
                     }}).success(function (data){
                         if(data.code == 0){
@@ -1253,8 +1253,9 @@ $scope.deleteList = function(){
 
     //获取用户列表
     function getExpertList(pageNum, pageSize){
-        $http.post('http://localhost:8080/blue-server/' + 'expert/getExpertListBack.do',{},{params:{
-            expertName:$scope.expertName,
+        $http.post('http://localhost:8080/parking-server/' + 'coupon/getCouponList.do',{},{params:{
+            parkingId:$scope.parkingId,
+            type:$scope.type,
             pageNum:pageNum,
             pageSize:pageSize
         }}).success(function (data)  {
@@ -1378,7 +1379,7 @@ $scope.deleteList = function(){
                 init = function() {
                     console.log($scope.numPerPage);
                         console.log($scope.vipType);
-                    $http.post('http://localhost:8080/blue-server/' + 'expert/getExpertListBack.do',{},{params:{
+                    $http.post('http://localhost:8080/parking-server/' + 'coupon/getCouponList.do',{},{params:{
                         pageNum:1,
                         pageSize:$scope.numPerPage
                     }}).success(function (data) {
@@ -1586,9 +1587,9 @@ $scope.exportExcel = function(){
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
 
-                var url="http://localhost:8080/blue-server/"+"expert/exportExcel.do?";
+                var url="http://localhost:8080/parking-server/"+"expert/exportExcel.do?";
 
-                // var modifyTopicUrl ="http://localhost:8080/blue-server/"+"expert/exportExcel.do";// 接收上传文件的后台地址
+                // var modifyTopicUrl ="http://localhost:8080/parking-server/"+"expert/exportExcel.do";// 接收上传文件的后台地址
                 // console.log($scope.selected);
                 // var temp = "";
 
@@ -1664,7 +1665,7 @@ $scope.deleteList = function(){
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"expert/deleteExpertBatch.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"expert/deleteExpertBatch.do";// 接收上传文件的后台地址
                 console.log($scope.selected);
                 var temp = "";
 
@@ -1780,18 +1781,18 @@ $scope.deleteList = function(){
             $scope.showConfirm = function() {
                 // 确定
                 var confirm = $mdDialog.confirm()
-                .title('是否确定删除该条用户信息')
+                .title('是否确定删除该条信息')
                             // .ariaLabel('Lucky day')
                             // .targetEvent(ev)
                             .ok('确定')
                             .cancel('取消');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    $http.post("http://localhost:8080/blue-server/"+"expert/deleteExpertById.do?",{},{params:{
-                        expertId:id
+                    $http.post("http://localhost:8080/parking-server/"+"coupon/deleteCouponById.do?",{},{params:{
+                        couponId:id
                     }}).success(function (data){
                         if(data.code == 0){
-                            $scope.showAlert("删除用户成功");
+                            $scope.showAlert("删除成功");
                             $(".delete-"+id).css("display","none");
                             $scope.total--;
                         } else {
@@ -1943,37 +1944,59 @@ $scope.deleteList = function(){
         }
 
 
-        $scope.expertId = $location.search().id;   //获取用户id
+        $scope.couponId = $location.search().id;   //获取用户id
         // console.log("id="+$scope.expertId);
         //根据用户id获取用户详细信息
-        $http.post('http://localhost:8080/blue-server/' + 'expert/getExpertById.do',{},{params:{
-            expertId:$scope.expertId   //用户id
+        $http.post('http://localhost:8080/parking-server/' + 'coupon/getCouponById.do',{},{params:{
+            couponId:$scope.couponId   //用户id
         }}).success( function (data){   
             if(data.code == 0){
-                $scope.expert = data.result;
-                console.log($scope.expert);
+                $scope.coupon = data.result;
+                console.log($scope.coupon);
             } else {
                 $scope.showAlert(data.message);
             }
         });
 
         //技能列表
-        $http.post("http://localhost:8080/blue-server/"+"skill/getSkillList.do?",{},{params:{
-                        pageNum:1,
-                        pageSize:100
-                    }}).success(function (data){
-                        if(data.code == 0){
-                            $scope.skillList=data.result;
-                            console.log($scope.skillList);
-                        } else {
-                            $scope.showAlert1(data.message)
-                        }
+        // $http.post("http://localhost:8080/parking-server/"+"skill/getSkillList.do?",{},{params:{
+        //                 pageNum:1,
+        //                 pageSize:100
+        //             }}).success(function (data){
+        //                 if(data.code == 0){
+        //                     $scope.skillList=data.result;
+        //                     console.log($scope.skillList);
+        //                 } else {
+        //                     $scope.showAlert1(data.message)
+        //                 }
 
-                    });
+        //             });
 
         $scope.doUploadPhoto = function(element) {
             $scope.imageFileObj = element.files[0];
         }
+
+
+        $scope.modifyCoupon = function(){
+            $.ajax({
+                    type: "POST",
+                    url: " http://localhost:8080/parking-server/coupon/modifyCoupon.do",
+                    contentType: "application/json; charset=utf-8",
+                    data: angular.toJson($scope.coupon),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            $scope.showAlert("修改成功");
+                        }else{
+                            $scope.showAlert("修改失败");
+                        }
+                    },
+                    error: function (message) {
+                        alert("数据提交失败");
+                    }
+                });
+        }
+
        
 
         //修改专家
@@ -1990,7 +2013,7 @@ $scope.deleteList = function(){
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"expert/modifyExpert.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"expert/modifyExpert.do";// 接收上传文件的后台地址
 
                 var form = new FormData();
                 
@@ -2058,7 +2081,7 @@ $scope.deleteList = function(){
                                 .ok('确定')
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
-            $http.post('http://localhost:8080/blue-server/' + 'expert/unbindingDecedent.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'expert/unbindingDecedent.do',{},{params:{
             expertId:$scope.expertId,  //用户id
             decedentId:decedentId
         }}).success( function (data){   
@@ -2086,7 +2109,7 @@ $scope.deleteList = function(){
                                 .ok('确定')
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
-            $http.post('http://localhost:8080/blue-server/' + 'expert/restPassword.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'expert/restPassword.do',{},{params:{
             expertId:$scope.expertId  //用户id
         }}).success( function (data){   
             if(data.code == 0){  //解除成功
@@ -2182,7 +2205,7 @@ $scope.deleteList = function(){
         $scope.expertId = $location.search().id;   //获取用户id
         console.log("id="+$scope.expertId);
         //根据用户id获取用户详细信息
-        $http.post('http://localhost:8080/blue-server/' + 'expert/getExpertById.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'expert/getExpertById.do',{},{params:{
             expertId:$scope.expertId   //用户id
         }}).success( function (data){   
             if(data.code == 0){
@@ -2210,7 +2233,7 @@ $scope.deleteList = function(){
 
 
         //根据用户id获取其绑定的逝者信息
-        $http.post('http://localhost:8080/blue-server/' + 'expert/getDetailedInformation.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'expert/getDetailedInformation.do',{},{params:{
             expertId:$scope.expertId   //用户id
         }}).success( function (data){   
             if(data.code == 0){
@@ -2242,7 +2265,7 @@ $scope.deleteList = function(){
                                 .ok('确定')
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
-            $http.post('http://localhost:8080/blue-server/' + 'expert/unbindingDecedent.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'expert/unbindingDecedent.do',{},{params:{
             expertId:$scope.expertId,  //用户id
             decedentId:decedentId
         }}).success( function (data){   
@@ -2270,7 +2293,7 @@ $scope.deleteList = function(){
                                 .ok('确定')
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
-            $http.post('http://localhost:8080/blue-server/' + 'expert/restPassword.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'expert/restPassword.do',{},{params:{
             expertId:$scope.expertId  //用户id
         }}).success( function (data){   
             if(data.code == 0){  //解除成功
@@ -2485,7 +2508,7 @@ $scope.deleteList = function(){
 
     //获取用户列表
     function getAddress(){
-        $http.post('http://localhost:8080/blue-server/' + 'wallet/getAddress.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'wallet/getAddress.do',{},{params:{
             expertId:$scope.expertId,
             walletType:$scope.walletType
         }}).success(function (data) {
@@ -2501,7 +2524,7 @@ $scope.deleteList = function(){
 
     //获取用户列表
     function getExpertList(pageNum, pageSize){
-        $http.post('http://localhost:8080/blue-server/' + 'wallet/getWalletDetailBack.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'wallet/getWalletDetailBack.do',{},{params:{
             expertId:$scope.expertId,
             walletType:$scope.walletType,
             pageNum:pageNum,
@@ -2629,7 +2652,7 @@ $scope.deleteList = function(){
                 init = function() {
                     console.log("初始化");
                     console.log($scope.expertId)
-                    $http.post('http://localhost:8080/blue-server/' + 'wallet/getWalletDetailBack.do',{},{params:{
+                    $http.post('http://localhost:8080/parking-server/' + 'wallet/getWalletDetailBack.do',{},{params:{
                         expertId:$scope.expertId,
                         pageNum:1,
                         pageSize:$scope.numPerPage
@@ -2838,9 +2861,9 @@ $scope.exportExcel = function(){
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
 
-                var url="http://localhost:8080/blue-server/"+"expert/exportExcel.do?";
+                var url="http://localhost:8080/parking-server/"+"expert/exportExcel.do?";
 
-                // var modifyTopicUrl ="http://localhost:8080/blue-server/"+"expert/exportExcel.do";// 接收上传文件的后台地址
+                // var modifyTopicUrl ="http://localhost:8080/parking-server/"+"expert/exportExcel.do";// 接收上传文件的后台地址
                 // console.log($scope.selected);
                 // var temp = "";
 
@@ -2916,7 +2939,7 @@ $scope.deleteList = function(){
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"expert/deleteExpertBatch.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"expert/deleteExpertBatch.do";// 接收上传文件的后台地址
                 console.log($scope.selected);
                 var temp = "";
 
@@ -3039,7 +3062,7 @@ $scope.deleteList = function(){
                             .cancel('取消');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    $http.post("http://localhost:8080/blue-server/"+"expert/deleteById.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"expert/deleteById.do?",{},{params:{
                         expertId:id
                     }}).success(function (data){
                         if(data.code == 0){
@@ -3189,22 +3212,22 @@ $scope.deleteList = function(){
 
 
         //技能列表
-        $http.post("http://localhost:8080/blue-server/"+"skill/getSkillList.do?",{},{params:{
-                        pageNum:1,
-                        pageSize:100
-                    }}).success(function (data){
-                        if(data.code == 0){
-                            $scope.skillList=data.result;
-                            console.log($scope.skillList);
-                        } else {
-                            $scope.showAlert1(data.message)
-                        }
+        // $http.post("http://localhost:8080/parking-server/"+"skill/getSkillList.do?",{},{params:{
+        //                 pageNum:1,
+        //                 pageSize:100
+        //             }}).success(function (data){
+        //                 if(data.code == 0){
+        //                     $scope.skillList=data.result;
+        //                     console.log($scope.skillList);
+        //                 } else {
+        //                     $scope.showAlert1(data.message)
+        //                 }
 
-                    });
+        //             });
 
         $scope.sendCode=function(mobile){
             console.log(mobile);
-            $http.post("http://localhost:8080/blue-server/"+"expert/genAuthCode.do?",{},{params:{
+            $http.post("http://localhost:8080/parking-server/"+"expert/genAuthCode.do?",{},{params:{
                         mobile:mobile
                     }}).success(function (data){
                         if(data.code == 0){
@@ -3226,7 +3249,7 @@ $scope.deleteList = function(){
         $scope.addExpert = function(){
                           // 确定
                           var confirm = $mdDialog.confirm()
-                          .title('是否确定添加专家')
+                          .title('是否确定添加')
                             // .ariaLabel('Lucky day')
                             // .targetEvent(ev)
                             .ok('确定')
@@ -3236,24 +3259,16 @@ $scope.deleteList = function(){
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"expert/addExpert.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"coupon/addCoupon.do";// 接收上传文件的后台地址
 
                 var form = new FormData();
-                form.append("expertName",$scope.expert.expertName);
-                form.append("introduction",$scope.expert.description);
-                form.append("sort",$scope.expert.sort);
-                form.append("price",$scope.expert.price);
-                form.append("status",$scope.expert.status);
-                form.append("mobile",$scope.expert.mobile);
-                form.append("photo",$scope.imageFileObj);
-                $scope.skillIds="";
-                $("input:checkbox[name='skill']:checked").each(function() {
-                        $scope.skillIds+= $(this).val() + ",";
-                });
-
-                form.append("skillIds",$scope.skillIds);
-
-                     
+                form.append("type",$scope.type);
+                form.append("parkingId",$scope.parkingId);
+                form.append("status",$scope.status);
+                form.append("full",$scope.full);
+                form.append("money",$scope.money);
+                form.append("total",$scope.total);
+                form.append("interval",$scope.interval);
 
                     var xhr = new XMLHttpRequest();
                     var response;
@@ -3309,7 +3324,7 @@ $scope.deleteList = function(){
 
 
 
-                    $http.post("http://localhost:8080/blue-server/"+"expert/addExpert.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"expert/addExpert.do?",{},{params:{
                         mobile:$scope.expert.mobile,
                         expertName:$scope.expert.expertName,
                         code:$scope.expert.code,
