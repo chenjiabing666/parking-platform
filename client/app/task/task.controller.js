@@ -75,14 +75,24 @@
                 }
 
 
+
+        $http.post('http://localhost:8080/parking-server/' + 'parking/getAllParking.do',{},{params:{
+                
+            }}).success(function (data) {
+                if (data.code == 0) {
+                   $scope.parkings=data.result;
+                   console.log($scope.parkings);
+                }
+            });
+
         function gettaskList(pageNum, pageSize){
-            $http.post('http://localhost:8080/blue-server/' + 'order/getOrderListBack.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'user/getYearVip.do',{},{params:{
                 pageNum:pageNum,
                 pageSize:pageSize,
                 mobile:$scope.mobile,
-                orderNum:$scope.orderNum,
-                status:$scope.status,
-                userType:$scope.userType,
+                userId:$scope.userId,
+                parkingId:$scope.parkingId,
+                
             }}).success(function (data) {
                 if (data.code == 0) {
                     $scope.taskLists=data.result;
@@ -171,7 +181,7 @@
 
             // console.log($scope.numPerPage);
             console.log($scope.status);
-            $http.post('http://localhost:8080/blue-server/' + 'order/getOrderListBack.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'user/getYearVip.do',{},{params:{
                 pageNum:1,
                 pageSize:$scope.numPerPage,
                 
@@ -312,7 +322,7 @@
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"batch/deleteTaskBatch.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"batch/deleteTaskBatch.do";// 接收上传文件的后台地址
                     console.log($scope.selected);
                     var temp = "";
 
@@ -365,7 +375,7 @@
 
         //生效或者失效
         $scope.UpOrUnderTask=function(id,status){
-                $http.post('http://localhost:8080/blue-server/' + 'task/UpOrUnderTask.do',{},{params:{
+                $http.post('http://localhost:8080/parking-server/' + 'task/UpOrUnderTask.do',{},{params:{
             taskId:id,
             status:status,
                 
@@ -402,7 +412,7 @@
 
 
 
-           $http.post('http://localhost:8080/blue-server/' + 'task/gettaskList.do',{},{params:{
+           $http.post('http://localhost:8080/parking-server/' + 'task/gettaskList.do',{},{params:{
             taskId:$scope.kwtaskId,
             nickName:$scope.kwNickName,
                     task:$scope.kwtask,
@@ -448,7 +458,7 @@
                             .cancel('取消');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    $http.post("http://localhost:8080/blue-server/"+"task/deleteTask.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"task/deleteTask.do?",{},{params:{
                         taskId:id
                     }}).success(function (data){
                         if(data.code == 0){
@@ -486,7 +496,7 @@
                 .ok('确定')
                 .cancel('取消');
                 $mdDialog.show(confirm).then(function(){
-                    $http.post("http://localhost:8080/blue-server/"+"elite/addElite.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"elite/addElite.do?",{},{params:{
                         taskId:id,
                     }}).success(function(data){
                         if(data.code == 0){
@@ -563,7 +573,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
 
         function gettaskList(pageNum, pageSize){
                 $scope.kwtTaskTitle = $("#taskTitle").val();
-            $http.post('http://localhost:8080/blue-server/' + 'task/getTaskListPlatform.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'task/getTaskListPlatform.do',{},{params:{
                 mobile:$scope.kwtMobile,
                 status:$scope.kwStatus1,
                 status2:$scope.kwStatus2,
@@ -663,7 +673,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
        //获取所有的订单列表或者根据条件获取订单列表
         init = function() {
             console.log($scope.numPerPage);
-            $http.post('http://localhost:8080/blue-server/' + 'task/getTaskListPlatform.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'task/getTaskListPlatform.do',{},{params:{
                 pageNum:1,
                 pageSize:$scope.numPerPage,
                  platformType:1,
@@ -799,7 +809,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"batch/deleteTaskBatch.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"batch/deleteTaskBatch.do";// 接收上传文件的后台地址
                     console.log($scope.selected);
                     var temp = "";
 
@@ -868,7 +878,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
 
 
 
-           $http.post('http://localhost:8080/blue-server/' + 'task/gettaskList.do',{},{params:{
+           $http.post('http://localhost:8080/parking-server/' + 'task/gettaskList.do',{},{params:{
             taskId:$scope.kwtaskId,
             nickName:$scope.kwNickName,
                     task:$scope.kwtask,
@@ -915,7 +925,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                             $mdDialog.show(confirm).then(function() {
                             $location.path("/task/custom-task-list");
                     // console.log('确定')
-                    // $http.post("http://localhost:8080/blue-server/"+"task/deleteTask.do?",{},{params:{
+                    // $http.post("http://localhost:8080/parking-server/"+"task/deleteTask.do?",{},{params:{
                     //     taskId:id
                     // }}).success(function (data){
                     //     if(data.code == 0){
@@ -974,7 +984,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
 
                     $http({
                        method:'post',
-                       url:'http://localhost:8080/blue-server/' + 'task/reviewTask.do',
+                       url:'http://localhost:8080/parking-server/' + 'task/reviewTask.do',
                        data: $.param({
                             taskId:id,
                             activated:status,
@@ -984,7 +994,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                     }).success(function (data){
                         if(data){
                            $scope.showAlert("应用成功");
-                           $http.post('http://localhost:8080/blue-server/' + 'task/getTaskListPlatform.do',{},{params:{
+                           $http.post('http://localhost:8080/parking-server/' + 'task/getTaskListPlatform.do',{},{params:{
                                 pageNum:1,
                                 pageSize:$scope.numPerPage,
                                  platformType:1,
@@ -1042,7 +1052,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
         $scope.modapp=0;
 
         //任务类型
-        $http.post("http://localhost:8080/blue-server/"+"task/getTaskTypeList.do?",{},{params:{
+        $http.post("http://localhost:8080/parking-server/"+"task/getTaskTypeList.do?",{},{params:{
                        
                     }}).success(function (data){
                         if(data.code == 0){
@@ -1054,7 +1064,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
 
 
         //获取任务详情
-        $http.post('http://localhost:8080/blue-server/' + 'task/getTask.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'task/getTask.do',{},{params:{
             taskId:$scope.taskId
         }}).success( function (data){
             if(data.code == 0){
@@ -1071,7 +1081,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                 $scope.appName="";
             }
 
-            $http.post("http://localhost:8080/blue-server/"+"app/searchByAppName.do?",{},{params:{
+            $http.post("http://localhost:8080/parking-server/"+"app/searchByAppName.do?",{},{params:{
                         appName:$scope.appName
                     }}).success(function (data){
                         if(data.code == 0){
@@ -1134,7 +1144,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                     .cancel('取消修改');
                     $mdDialog.show(confirm).then(function() {
 
-                        $http.post("http://localhost:8080/blue-server/"+"task/modifyTask.do?",{},{params:{
+                        $http.post("http://localhost:8080/parking-server/"+"task/modifyTask.do?",{},{params:{
                             taskId:$scope.taskId,
                             taskName:$scope.task.taskName,
                             introduction:$scope.task.introduction,
@@ -1198,7 +1208,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
             $location.path("/task/task-list");
         }
 
-        $http.post('http://localhost:8080/blue-server/' + 'task/getTaskById.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'task/getTaskById.do',{},{params:{
             taskId:$scope.taskId,
         }}).success( function (data){
                 if(data.code == 0){
@@ -1220,7 +1230,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                 .cancel('取消修改');
 
                 $mdDialog.show(confirm).then(function() {
-                    $http.post("http://localhost:8080/blue-server/"+"task/modifyTask.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"task/modifyTask.do?",{},{params:{
                         taskId:$scope.taskId,
                         userId:$scope.task.userId,
                         taskTitle:$scope.task.taskTitle,
@@ -1277,7 +1287,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
             $location.path("/task/task-list");
         }
 
-        $http.post('http://localhost:8080/blue-server/' + 'task/getTaskById.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'task/getTaskById.do',{},{params:{
             taskId:$scope.taskId,
         }}).success( function (data){
                 if(data.code == 0){
@@ -1299,7 +1309,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                 .cancel('取消');
 
                 $mdDialog.show(confirm).then(function() {
-                    $http.post("http://localhost:8080/blue-server/"+"task/dealTask.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"task/dealTask.do?",{},{params:{
                         dealType:$scope.dealType,
                         taskId:$scope.taskId,
                         userId:$scope.task.userId,
@@ -1377,7 +1387,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
 
 
         //任务类型
-        $http.post("http://localhost:8080/blue-server/"+"task/getTaskTypeList.do?",{},{params:{
+        $http.post("http://localhost:8080/parking-server/"+"task/getTaskTypeList.do?",{},{params:{
                        
                     }}).success(function (data){
                         if(data.code == 0){
@@ -1395,7 +1405,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                 $scope.appName="";
             }
 
-            $http.post("http://localhost:8080/blue-server/"+"app/searchByAppName.do?",{},{params:{
+            $http.post("http://localhost:8080/parking-server/"+"app/searchByAppName.do?",{},{params:{
                         appName:$scope.appName
                     }}).success(function (data){
                         if(data.code == 0){
@@ -1454,7 +1464,7 @@ function CustomTaskCtrl($scope,$http,$mdDialog,$location,$timeout){
                 .cancel('取消添加');
                 $mdDialog.show(confirm).then(function() {
 
-                    $http.post("http://localhost:8080/blue-server/"+"task/addTask.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"task/addTask.do?",{},{params:{
                         taskName:$scope.task.taskName,
                         introduction:$scope.task.introduction,
                         typeId:$scope.task.taskTypeId,
