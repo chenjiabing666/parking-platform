@@ -42,12 +42,13 @@
     }
 
     function getTeacherList(pageNum, pageSize){
-     $http.post('http://localhost:8080/aiyixue-server/' + 'teacher/getTeacherList.do',{},{params:{
-        userName:$scope.kwUserName,
+     $http.post('http://localhost:8080/parking-server/' + 'user/getUserList.do',{},{params:{
+        mobile:$scope.mobile,
+        userId:$scope.userId,
         pageNum:pageNum,
         pageSize:pageSize
     }}).success(function (data) {
-     if (data.errorCode == 0) {
+     if (data.code == 0) {
        $scope.teacherList=data.result;
        $scope.stores=data.result;
        $scope.currentPageStores = data.result;
@@ -97,12 +98,11 @@ function search() {
 init = function() {
     console.log($scope.numPerPage);
 
-    $http.post('http://localhost:8080/aiyixue-server/' + 'teacher/getTeacherList.do',{},{params:{
-        teacherName:$scope.kwTeacherName,
+    $http.post('http://localhost:8080/parking-server/' + 'user/getUserList.do',{},{params:{
         pageNum:1,
         pageSize:$scope.numPerPage
     }}).success(function (data) {
-     if (data.errorCode == 0) {
+     if (data.code == 0) {
        $scope.stores=data.result;
        $scope.total = data.total;
        console.log($scope.stores);
@@ -216,7 +216,7 @@ init = function() {
                             .cancel('取消删除');
     
                             $mdDialog.show(confirm).then(function() {
-                                var modifyTopicUrl ="http://localhost:8080/aiyixue-server/"+"teacher/deleteTeacher.do";// 接收上传文件的后台地址
+                                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"teacher/deleteTeacher.do";// 接收上传文件的后台地址
                                
 
                                     var xhr = new XMLHttpRequest();
@@ -268,14 +268,14 @@ init = function() {
             console.log($scope.realName)
             $scope.isSearch = true;
             
-            $http.post('http://localhost:8080/aiyixue-server/' + 'teacher/getTeacherList.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'teacher/getTeacherList.do',{},{params:{
                 teacherName:$scope.teacherName,
                 nickName:$scope.nickName,
                 realName:$scope.realName,
                 pageNum:num,
                 pageSize:size
             }}).success(function (data){
-                if(data.errorCode == 0){
+                if(data.code == 0){
                     $scope.stores=data.result;
                     $scope.total = data.total;
                     $scope.currentPageStores = $scope.stores;
@@ -306,7 +306,7 @@ init = function() {
                 // console.log('确定')
 
 
-            var modifyTopicUrl ="http://localhost:8080/aiyixue-server/"+"batch/deleteTeacherBatch.do";// 接收上传文件的后台地址
+            var modifyTopicUrl ="http://localhost:8080/parking-server/"+"batch/deleteTeacherBatch.do";// 接收上传文件的后台地址
                 console.log($scope.selected);
                 var temp = "";
 
@@ -369,10 +369,10 @@ init = function() {
                             .cancel('取消');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    $http.post("http://localhost:8080/aiyixue-server/"+"teacher/deleteTeacher.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"teacher/deleteTeacher.do?",{},{params:{
                         teacherId:id
                     }}).success(function (data){
-                        if(data.errorCode == 0){
+                        if(data.code == 0){
                             $scope.showAlert("删除教师成功");
                             $(".delete-"+id).css("display","none");
                             $scope.total--;
@@ -455,7 +455,7 @@ function AddTeacherCtrl($scope,$http,$location,$mdDialog,$timeout){
                             .cancel('取消添加');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    var addTeacherUrl ="http://localhost:8080/aiyixue-server/" + "teacher/addTeacher.do?";  
+                    var addTeacherUrl ="http://localhost:8080/parking-server/" + "teacher/addTeacher.do?";  
                     // FormData 对象
                     var form = new FormData();
                     form.append("teacherName", $scope.teacher.teacherName);                 
@@ -527,10 +527,10 @@ function ChangeTeacherCtrl($scope,$http,$location,$mdDialog,$timeout){
     }
 
     $scope.teacherId = $location.search().id;
-    $http.post("http://localhost:8080/aiyixue-server/"+"teacher/getTeacherById.do?",{},{params:{
+    $http.post("http://localhost:8080/parking-server/"+"teacher/getTeacherById.do?",{},{params:{
         teacherId:$scope.teacherId
     }}).success(function (data){
-        if(data.errorCode == 0){
+        if(data.code == 0){
             $scope.teacher = data.result;
             console.log($scope.teacher);
             console.log("  " + $scope.teacher);
@@ -558,7 +558,7 @@ function ChangeTeacherCtrl($scope,$http,$location,$mdDialog,$timeout){
                             .cancel('取消修改');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    var changeTeacherUrl ="http://localhost:8080/aiyixue-server/" + "teacher/modifyTeacher.do?";  
+                    var changeTeacherUrl ="http://localhost:8080/parking-server/" + "teacher/modifyTeacher.do?";  
                     // FormData 对象
                     var form = new FormData();
                     form.append("teacherId",$scope.teacher.teacherId);

@@ -42,7 +42,7 @@
         }
 
         //表单回显
-        $http.post('http://localhost:8080/blue-server/' + 'config/getConfigById.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'config/getConfigById.do',{},{params:{
             configId:1  //管理员Id
         }}).success( function (data){   
             if(data.code == 0){
@@ -57,7 +57,7 @@
 
         //修改系统参数
         $scope.modifySetting=function(){
-            $http.post('http://localhost:8080/blue-server/' + 'config/modifyConfig.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'config/modifyConfig.do',{},{params:{
                 configId:1,
                 copyRight:$scope.config.copyRight,
                 companyPhone:$scope.config.companyMobile,
@@ -131,7 +131,7 @@
                 $scope.status=undefined;
             }
              console.log('$scope.settingName=='+$scope.settingName  + ", " + $scope.account+"---"+$scope.status);
-             $http.post('http://localhost:8080/blue-server/' + 'setting/getSettingList.do',{},{params:{
+             $http.post('http://localhost:8080/parking-server/' + 'setting/getSettingList.do',{},{params:{
                 settingName:$scope.kwSettingName,   //用户名
                 status:$scope.status,   //状态
                 account:$scope.account,   //账号
@@ -270,7 +270,7 @@
             // getRoleList(1, 100);
 
             // console.log(:$scope.kwSettingName+"----"+$scope.account+);
-            $http.post('http://localhost:8080/blue-server/' + 'setting/getSettingList.do',{},{params:{
+            $http.post('http://localhost:8080/parking-server/' + 'setting/getSettingList.do',{},{params:{
                 // settingName:$scope.kwSettingName,
                 // account:$scope.account,
                 // status:$scope.status,
@@ -320,7 +320,7 @@
 
         //重置密码
         $scope.resetPassWord=function(id){
-            $http.post("http://localhost:8080/blue-server/"+"setting/resetPassword.do?",{},{params:{
+            $http.post("http://localhost:8080/parking-server/"+"setting/resetPassword.do?",{},{params:{
                             settingId:id
                         }}).success(function (data){
                             if(data.successCode == 100200){
@@ -346,7 +346,7 @@
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
                         // console.log('确定')
-                        $http.post("http://localhost:8080/blue-server/"+"setting/startSetting.do?",{},{params:{
+                        $http.post("http://localhost:8080/parking-server/"+"setting/startSetting.do?",{},{params:{
                             settingId:id
                         }}).success(function (data){
                             if(data.successCode == 100200){
@@ -392,7 +392,7 @@
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
                         // console.log('确定')
-                        $http.post("http://localhost:8080/blue-server/"+"setting/logout.do?",{},{params:{
+                        $http.post("http://localhost:8080/parking-server/"+"setting/logout.do?",{},{params:{
                             settingId:id
                         }}).success(function (data){
                         	if(data.successCode == 100200){
@@ -566,7 +566,7 @@
         });
 
         // 获取权限列表
-        $http.post('http://localhost:8080/blue-server/' + 'authority/getAuthorityList.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'authority/getAuthorityList.do',{},{params:{
             pageSize:100,
             pageNum:1
         }}).success(function (data) {

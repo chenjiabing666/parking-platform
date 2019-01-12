@@ -110,7 +110,8 @@
         $http.post('http://localhost:8080/parking-server/' + 'parking/getParkingList.do',{},{params:{
             pageNum:pageNum,
             pageSize:pageSize,
-            mobile:$scope.mobile
+            mobile:$scope.mobile,
+            name:$scope.name
         }}).success(function (data)  {
          if (data.code == 0) {
            $scope.userLists=data.result;
@@ -2105,9 +2106,13 @@ $scope.deleteList = function(){
                             $mdDialog.show(confirm).then(function() {
                 var modifyTopicUrl ="http://localhost:8080/parking-server/"+"parking/addParking.do";
 
+
+                if ($scope.webSite==undefined) {
+                    $scope.webSite="";
+                }
                 var form = new FormData();
                 form.append("name",$scope.name);
-                form.append("number",$scope.number);
+                // form.append("number",$scope.number);
                 form.append("provinceId",$scope.provinceId);
                 form.append("cityId",$scope.cityId);
                 form.append("areaId",$scope.areaId);
@@ -2116,6 +2121,9 @@ $scope.deleteList = function(){
                 form.append("password",$scope.password);
                 form.append("money",$scope.money);
                 form.append("webSite",$scope.webSite);
+                 form.append("total",$scope.total);
+                  form.append("address",$scope.address);
+                  form.append("yearMoney",$scope.yearMoney);
                 for (var i = $scope.imageFileObj.length - 1; i >= 0; i--) {
                     form.append("images",$scope.imageFileObj[i]);
                 }

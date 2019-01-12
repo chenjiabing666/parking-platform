@@ -28,6 +28,12 @@
                         data-ng-model="mobile" data-ng-keyup="search()" style="width: 150px;">
                    </label>
 
+                   <label class="col-sm-2 col-xs-2">
+                        <span >名称:</span>
+                        <input type="text" id="userId" placeholder="输入停车场名称" class="border-radius-5 border-default ml-10 input-default input-w-50"
+                        data-ng-model="name" data-ng-keyup="search()" style="width: 150px;">
+                   </label>
+
                   <!--  <label class="col-sm-2 col-xs-2">
                         <span >用户名称:</span>
                         <input type="text" id="nickName" placeholder="输入用户昵称" class="border-radius-5 border-default ml-10 input-default input-w-50"
@@ -85,6 +91,9 @@
                 <th><div class="th">
                 编号
                 </div></th>
+                 <th><div class="th">
+                详细地址
+                </div></th>
                 <th><div class="th">
                 图片
                 </div></th>
@@ -121,6 +130,7 @@
                 <!-- <td ng-bind="store.userType | parseUserType"></td> -->
                 <td ng-bind="store.parking.name"></td>
                 <td ng-bind="store.parking.number"></td>
+                <td ng-bind="store.parking.address"></td>
                 <td>
                     <p ng-repeat="image in store.images"><a href="{{image.url}}" target="_blank">{{image.url}}</a></p>
                 </td>
