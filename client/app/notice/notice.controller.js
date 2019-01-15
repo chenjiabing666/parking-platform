@@ -1,12 +1,11 @@
 (function(){
-	// 'notice strick'
+    // 'notice strick'
     noticeCtrl
-	angular.module('app.notice',[])
+    angular.module('app.notice',[])
   .controller('noticeCtrl', ['$scope','$http','$mdDialog','$location','$timeout',noticeCtrl])
   .controller('noticeAddCtrl', ['$scope', '$http','$location','$mdDialog','$timeout',noticeAddCtrl])
   .controller('noticeDetailCtrl', ['$scope', '$http','$location','$mdDialog','$timeout','$sce',noticeDetailCtrl])
   .controller('noticechangeCtrl', ['$scope', '$http','$location','$mdDialog','$timeout',noticechangeCtrl])
-  .controller('noticecommonCtrl', ['$scope', '$http','$location','$mdDialog','$timeout',noticecommonCtrl])
   // .controller('noticeCtrl', ['$scope', '$http','$location','$mdDialog','$timeout',noticeCtrl])
   .filter('parseGender',function() {
     return function(input){
@@ -47,218 +46,6 @@
     }
 })
 
-     // 查看详情
-    function noticecommonCtrl($scope,$http,$location,$mdDialog,$timeout,$sce){
-
-        $timeout($scope.login(),10)
-
-
-        $scope.isShow = 0;
-        var authoritySet = sessionStorage.authoritySet.split(',');
-        //控制权限，如果没有这个权限，不显示
-        for (var i = 0; i < authoritySet.length; i++) {
-            if (authoritySet[i] == "51") {
-                $scope.isShow = 1;
-            }
-        }
-
-
-        $scope.backClick = function(){
-            $location.path('/notice/notice-list');
-        }
-
-
-        $scope.showAlert = function(txt) {
-             // dialog
-            $mdDialog.show(
-                $mdDialog.alert()
-                    // .parent(angular.element(document.querySelector('#popupContainer')))
-                    .clickOutsideToClose(false)
-                    .title(txt)
-                    .ok('确定')
-                    
-            )
-        }
-
-
-        $scope.moduleId = $location.search().id;   
-
-        $http.post("http://localhost:8080/blue-server/"+"solution/getSolutionByActivated.do?",{},{params:{
-                        activated:1,
-                        moduleId:$scope.moduleId
-                    }}).success(function (data){
-                        if(data.code == 0){
-                               $scope.solutions=data.result;
-                               console.log($scope.solutions);
-                               $scope.moduleId=$scope.solutions[0].moduleId;
-                        }else{
-                            console.log(data.message);
-                        }
-
-                    });
-
-        $http.post("http://localhost:8080/blue-server/"+"module/getModuleList.do?",{},{params:{
-                        pageNum:1,
-                        pageSize:20
-                    }}).success(function (data){
-                        if(data.code == 0){
-                               $scope.moduleList=data.result;
-                               console.log($scope.moduleList);
-                               // $scope.moduleId=$scope.moduleList[0].moduleId;
-                        }
-
-                    });
-        
-        
-
-        $scope.doUploadPhoto_q1 = function(element) {
-            $scope.q1_file = element.files[0];
-        }
-        
-        $scope.doUploadPhoto_ad1 = function(element) {
-            $scope.ad1_file = element.files[0];
-        }
-       
-        $scope.doUploadPhoto_an1 = function(element) {
-            $scope.an1_file = element.files[0];
-        }
-
-        $scope.modifySolution = function(id){
-
-
-                          // 确定
-                          var confirm = $mdDialog.confirm()
-                          .title('是否确定修改')
-                            // .ariaLabel('Lucky day')
-                            // .targetEvent(ev)
-                            .ok('确定修改')
-                            .cancel('取消修改');
-
-                            $mdDialog.show(confirm).then(function() {
-                    // console.log('确定')
-
-
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"solution/modifySolution.do";// 接收上传文件的后台地址
-                
-                
-                var form = new FormData();
-                
-                    for (var j = $scope.solutions.length - 1; j >= 0; j--) {
-                        if ($scope.solutions[j].solutionId==id) {
-                                form.append("questionReasons",$scope.solutions[j].questionReason);
-                                form.append("solutionId",$scope.solutions[j].solutionId);
-                                form.append("advise",$scope.solutions[j].advise);
-                                form.append("analysis",$scope.solutions[j].analysis);
-                                form.append("questionReasonFile",$scope.q1_file);
-                                form.append("adviseFile",$scope.ad1_file);
-                                form.append("analysisFile",$scope.an1_file);
-
-                                form.append("qTypes",$scope.solutions[j].questionReasonType);
-                                form.append("adTypes",$scope.solutions[j].adviseType);
-                                form.append("anTypes",$scope.solutions[j].analysisType);
-                                form.append("activated",1);
-                        }                   
-                    }
-
-                    var xhr = new XMLHttpRequest();
-                    var response;
-                    xhr.open("post", modifyTopicUrl, true);
-                    xhr.send(form);
-                    xhr.onreadystatechange = doResult;
-                    function doResult() {
-                       
-                        if(xhr.readyState == 4  && xhr.status == 200){
-                             var response=JSON.parse(xhr.responseText);
-                             if (response.code==0) {
-                                $scope.showAlert("修改成功");
-                             }else{
-                                $scope.showAlert(response.message);
-                             }
-                            
-                        } 
-
-
-                 }
-                    // init();
-                    $scope.showAlert = function(txt) {
-
-                        $mdDialog.show(
-                            $mdDialog.alert()
-                            .clickOutsideToClose(false)
-                            .title(txt)
-                            .ok('确定')
-                            )
-
-                    }
-
-                })
-
-                        }
-      
-
-        
-
-        
-
-
-        //重置密码
-        $scope.modifyNotice=function(){
-                     // 确定
-                    var confirm = $mdDialog.confirm()
-                    .title('是否确定修改模块信息')
-                                // .ariaLabel('Lucky day')
-                                // .targetEvent(ev)
-                                .ok('确定')
-                                .cancel('取消');
-                                $mdDialog.show(confirm).then(function() {
-            $http.post('http://localhost:8080/blue-server/' + 'module/modifyModule.do',{},{params:{
-                        moduleId:$scope.module.moduleId,
-                        moduleName:$scope.module.moduleName,
-                        description:$scope.module.description,
-                        highScoreMax:$scope.module.highScoreMax,
-                        highScoreMin:$scope.module.highScoreMin,
-                        mediumScoreMax:$scope.module.mediumScoreMax,
-                        mediumScoreMin:$scope.module.mediumScoreMin,
-                        lowScoreMax:$scope.module.lowScoreMax,
-                        lowScoreMin:$scope.module.lowScoreMin,
-
-        }}).success( function (data){   
-            if(data.code == 0){  //解除成功
-                $scope.showAlert("修改成功");
-            } else {
-                $scope.showAlert("修改失败");
-            }
-        });
-            }, function() {
-
-                        $scope.showAlert("取消修改");
-                    });
-        }
-
-
-        /** 
-        * 视频路径处理 
-        */  
-        $scope.videoUrl = function(url){  
-         return $sce.trustAsResourceUrl(url);  
-     }  
-
-     $scope.videoBig = false;
-     $scope.videoImg = true;
-     $scope.videoClick = function(){
-        $scope.videoBig = true;
-        $scope.videoImg = false;
-    }
-
-    $scope.closeVideo = function(){
-        $scope.videoBig = false;
-        $scope.videoImg = true;
-    }   
-
-}
-
-
-       
 
 
   function noticeCtrl($scope,$http,$mdDialog,$location,$timeout){
@@ -300,7 +87,7 @@
     $scope.isShow = 0;
     var authoritySet = sessionStorage.authoritySet.split(',');
     for (var i = 0; i < authoritySet.length; i++) {
-        if (authoritySet[i] == "39") {
+        if (authoritySet[i] == "53") {
             console.log("authoritySet:"+authoritySet);
             $scope.isShow = 1;
         }
@@ -320,9 +107,11 @@
     //获取逝者列表
     function getnoticeList(pageNum, pageSize){
         console.log("cdcd")
-        $http.post('http://localhost:8080/blue-server/' + 'module/getModuleList.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'message/getMessageList.do',{},{params:{
             pageNum:pageNum,
-            pageSize:pageSize
+            pageSize:pageSize,
+            title:$scope.title,
+            content:$scope.content
         }}).success(function (data) {
          if (data.code == 0) {
            $scope.noticeLists=data.result;
@@ -345,7 +134,7 @@
 
     //公告置顶
     $scope.topNotice=function(id){
-        $http.post('http://localhost:8080/blue-server/' + 'notice/topNotice.do',{},{params:{
+        $http.post('http://localhost:8080/parking-server/' + 'notice/topNotice.do',{},{params:{
                         noticeId:id
                     }}).success(function (data) {
                      if (data.code == 0) {
@@ -429,18 +218,19 @@
                 init = function() {
                     // console.log($scope.numPerPage);
                     
-                    $http.post('http://localhost:8080/blue-server/' + 'module/getModuleList.do',{},{params:{
+                    $http.post('http://localhost:8080/parking-server/' + 'message/getMessageList.do',{},{params:{
                         pageNum:1,
                         pageSize:$scope.numPerPage
                     }}).success(function (data) {
                      if (data.code == 0) {
                        $scope.stores=data.result;
                        $scope.total = data.total;
-                       console.log($scope.stores);
+                       // console.log($scope.stores);
 
                        // $scope.search();
                      // $scope.searchnotice(1,$scope.numPerPage);
                      $scope.currentPageStores = $scope.stores;
+                     $scope.filteredStores=data.result;
                      // $scope.searchnotice(page,$scope.numPerPage);
                  }
              });
@@ -452,9 +242,9 @@
 
 
 
-//          $scope.selected = {};
+//          $scope.selected = {};
 
-//           $scope.isSelected = function (id) {
+//           $scope.isSelected = function (id) {
 //             console.log("isSelected");
 
 //             if($scope.selected[id] == true){
@@ -466,18 +256,18 @@
 //                 return false;
 
 //             }
-//             
-//           };
-//           $scope.isSelectedAll = function () {
+//             
+//           };
+//           $scope.isSelectedAll = function () {
 //     console.log("isSelectedAll");
-//             return $scope.selected.length === $scope.currentPageStores.length;
-//           };
+//             return $scope.selected.length === $scope.currentPageStores.length;
+//           };
 
-//           var updateSelected = function (action, id) {
+//           var updateSelected = function (action, id) {
 
 //     console.log($scope.isSelected(id));
 
-//             if ($scope.isSelected(id)){
+//             if ($scope.isSelected(id)){
 
 
 //             $scope.selected[id] = false;
@@ -488,21 +278,21 @@
 //                 $scope.selected[id] = true;
 
 //             }
-//            
-//           };
-          //更新某一列数据的选择
-//           $scope.updateSelection = function (id) {
+//            
+//           };
+          //更新某一列数据的选择
+//           $scope.updateSelection = function (id) {
 
-//             updateSelected(id);
-//           };
-          //全选操作
+//             updateSelected(id);
+//           };
+          //全选操作
 
 $scope.selected = {};
 $scope.noticeIdsExcel=[];
 
 $scope.isSelectedAll = false;
 
-  $scope.isSelected = function (id) {
+  $scope.isSelected = function (id) {
     console.log("isSelected==" + $scope.selected[id]);
 
     if($scope.selected[id] == true){
@@ -514,32 +304,32 @@ $scope.isSelectedAll = false;
         return false;
 
     }
-                
-          };
+                
+          };
 
 
-          var judgeSelectedAll = function () {
+          var judgeSelectedAll = function () {
 
     var isSelectedAll = true;
 
 
-      for (var i = 0; i < $scope.currentPageStores.length; i++) {
+      for (var i = 0; i < $scope.currentPageStores.length; i++) {
 
 
-                      var notice = $scope.currentPageStores[i];
+                      var notice = $scope.currentPageStores[i];
 
         isSelectedAll &= $scope.selected[notice.noticeId];
 
-                }
+                }
 
     return isSelectedAll;
-          };
+          };
 
-          var updateSelected = function (id) {
+          var updateSelected = function (id) {
 
     console.log($scope.isSelected(id));
 
-                if ($scope.isSelected(id)){
+                if ($scope.isSelected(id)){
 
 
         $scope.selected[id] = false;
@@ -555,20 +345,20 @@ $scope.isSelectedAll = false;
 
 
 
-               
-          };
+               
+          };
 
 
 
-      var updateSelectedByStatus = function (id, status) {
+      var updateSelectedByStatus = function (id, status) {
 
     console.log($scope.isSelected(id));
 
 
     $scope.selected[id] = status;
-               
-          };
-         $scope.selectAll = function () {
+               
+          };
+         $scope.selectAll = function () {
 
 
     console.log("isSelectedAll1"  + $scope.isSelectedAll);
@@ -585,31 +375,31 @@ $scope.isSelectedAll = false;
 
     }
 
-            
-                for (var i = 0; i < $scope.currentPageStores.length; i++) {
+            
+                for (var i = 0; i < $scope.currentPageStores.length; i++) {
 
 
-                      var notice = $scope.currentPageStores[i];
+                      var notice = $scope.currentPageStores[i];
 
 
 
         updateSelectedByStatus(notice.noticeId, $scope.isSelectedAll);
 
-                }
+                }
 
             
 
 
-          };
+          };
 
 
-          $scope.selectItem = function (id) {
+          $scope.selectItem = function (id) {
         console.log("selectItem"  + id);
 
 
     updateSelected(id);
 
-          };
+          };
 
 
 
@@ -629,9 +419,9 @@ $scope.exportExcel = function(){
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
 
-                var url="http://localhost:8080/blue-server/"+"notice/exportExcel.do?";
+                var url="http://localhost:8080/parking-server/"+"notice/exportExcel.do?";
 
-                // var modifyTopicUrl ="http://localhost:8080/blue-server/"+"notice/exportExcel.do";// 接收上传文件的后台地址
+                // var modifyTopicUrl ="http://localhost:8080/parking-server/"+"notice/exportExcel.do";// 接收上传文件的后台地址
                 // console.log($scope.selected);
                 // var temp = "";
 
@@ -704,7 +494,7 @@ $scope.deleteList = function(){
                     // console.log('确定')
 
 
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"notice/deletenoticeBatch.do";// 接收上传文件的后台地址
+                var modifyTopicUrl ="http://localhost:8080/parking-server/"+"notice/deletenoticeBatch.do";// 接收上传文件的后台地址
                 console.log($scope.selected);
                 var temp = "";
 
@@ -776,7 +566,7 @@ $scope.deleteList = function(){
 
 
 
-           $http.post('http://localhost:8080/blue-server/' + 'notice/getnoticeList.do',{},{params:{
+           $http.post('http://localhost:8080/parking-server/' + 'notice/getnoticeList.do',{},{params:{
             noticeId:$scope.kwnoticeId,
             nickName:$scope.kwNickName,
                     /*csName:$scope.csName,
@@ -816,18 +606,18 @@ $scope.deleteList = function(){
             $scope.showConfirm = function() {
                 // 确定
                 var confirm = $mdDialog.confirm()
-                .title('是否确定删除该模块')
+                .title('是否确定删除该条消息')
                             // .ariaLabel('Lucky day')
                             // .targetEvent(ev)
                             .ok('确定')
                             .cancel('取消');
                             $mdDialog.show(confirm).then(function() {
                     // console.log('确定')
-                    $http.post("http://localhost:8080/blue-server/"+"module/deleteModuleById.do?",{},{params:{
-                        moduleId:id
+                    $http.post("http://localhost:8080/parking-server/"+"message/deleteMessageById.do?",{},{params:{
+                        messageId:id
                     }}).success(function (data){
                         if(data.code == 0){
-                            $scope.showAlert("删除模块成功");
+                            $scope.showAlert("删除消息成功");
                             $(".delete-"+id).css("display","none");
                             $scope.total--;
                         } else {
@@ -864,7 +654,7 @@ $scope.deleteList = function(){
                 .ok('确定')
                 .cancel('取消');
                 $mdDialog.show(confirm).then(function(){
-                    $http.post("http://localhost:8080/blue-server/"+"elite/addElite.do?",{},{params:{
+                    $http.post("http://localhost:8080/parking-server/"+"elite/addElite.do?",{},{params:{
                         noticeId:id,
                     }}).success(function(data){
                         if(data.errorCode == 0){
@@ -934,44 +724,44 @@ $scope.deleteList = function(){
             }
         }
 
-        // var E = window.wangEditor;
-        // var editor = new E('#detailEditor');
-        // // 或者 var editor = new E( document.getElementById('editor') )
-        // // 或者 var editor = new E( document.getElementById('editor') )
-        //     editor.customConfig.menus = [
-        //         // 'head',  // 标题
-        //         'bold',  // 粗体
-        //         'fontSize',  // 字号
-        //         'fontName',  // 字体
-        //         'italic',  // 斜体
-        //         'underline',  // 下划线
-        //         'strikeThrough',  // 删除线
-        //         'foreColor',  // 文字颜色
-        //         'backColor',  // 背景颜色
-        //         'link',  // 插入链接
-        //         'list',  // 列表
-        //         'justify',  // 对齐方式
-        //         'quote',  // 引用
-        //         'emoticon',  // 表情
-        //         // 'image',  // 插入图片
-        //         'table',  // 表格
-        //         // 'video',  // 插入视频
-        //         'code',  // 插入代码
-        //         'undo',  // 撤销
-        //         'redo'  // 重复
-        //     ];
+        var E = window.wangEditor;
+        var editor = new E('#detailEditor');
+        // 或者 var editor = new E( document.getElementById('editor') )
+        // 或者 var editor = new E( document.getElementById('editor') )
+            editor.customConfig.menus = [
+                // 'head',  // 标题
+                'bold',  // 粗体
+                'fontSize',  // 字号
+                'fontName',  // 字体
+                'italic',  // 斜体
+                'underline',  // 下划线
+                'strikeThrough',  // 删除线
+                'foreColor',  // 文字颜色
+                'backColor',  // 背景颜色
+                'link',  // 插入链接
+                'list',  // 列表
+                'justify',  // 对齐方式
+                'quote',  // 引用
+                'emoticon',  // 表情
+                // 'image',  // 插入图片
+                'table',  // 表格
+                // 'video',  // 插入视频
+                'code',  // 插入代码
+                'undo',  // 撤销
+                'redo'  // 重复
+            ];
 
             //指定上传的文件名，这里必须和后端代码对应
             // editor.customConfig.uploadFileName = 'myFile'
-            // editor.customConfig.uploadImgServer = "http://localhost:8080/blue-server/notice/uploadImage.do"  // 上传图片到服务器
+            // editor.customConfig.uploadImgServer = "http://localhost:8080/parking-server/notice/uploadImage.do"  // 上传图片到服务器
 
             // editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
             
             // 隐藏“网络图片”tab
-        //     editor.customConfig.showLinkImg = false;
-        //     editor.customConfig.zIndex =1;
+            editor.customConfig.showLinkImg = false;
+            editor.customConfig.zIndex =1;
 
-        // editor.create();
+        editor.create();
 
 
         //绑定逝者
@@ -997,105 +787,22 @@ $scope.deleteList = function(){
         }
 
 
-        $scope.moduleId = $location.search().id;   //获取逝者id
+        $scope.noticeId = $location.search().id;   //获取逝者id
         
-        $http.post('http://localhost:8080/blue-server/' + 'module/getModuleById.do',{},{params:{
-            moduleId:$scope.moduleId   
+        //根据逝者id获取逝者详细信息
+        $http.post('http://localhost:8080/parking-server/' + 'message/getMessageById.do',{},{params:{
+            messageId:$scope.noticeId   
         }}).success( function (data){   
             if(data.code == 0){
-                $scope.module = data.result;
-                console.log($scope.module);
-                $scope.industryList=data.result.industries;
-                           
+                $scope.notice = data.result;
+                //设置富文本的内容
+                editor.txt.html($scope.notice.content);
+                console.log($scope.notice);                
             } else {
                 $scope.showAlert(data.message);
             }
         });
 
-        $scope.doUploadPhoto_q1 = function(element) {
-            $scope.q1_file = element.files[0];
-        }
-        
-        $scope.doUploadPhoto_ad1 = function(element) {
-            $scope.ad1_file = element.files[0];
-        }
-       
-        $scope.doUploadPhoto_an1 = function(element) {
-            $scope.an1_file = element.files[0];
-        }
-
-        $scope.modifySolution = function(id){
-
-
-                          // 确定
-                          var confirm = $mdDialog.confirm()
-                          .title('是否确定修改')
-                            // .ariaLabel('Lucky day')
-                            // .targetEvent(ev)
-                            .ok('确定修改')
-                            .cancel('取消修改');
-
-                            $mdDialog.show(confirm).then(function() {
-                    // console.log('确定')
-
-
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"solution/modifySolution.do";// 接收上传文件的后台地址
-                
-                
-                var form = new FormData();
-                for (var i = $scope.industryList.length - 1; i >= 0; i--) {
-                    for (var j = $scope.industryList[i].solutions.length - 1; j >= 0; j--) {
-                        if ($scope.industryList[i].solutions[j].solutionId==id) {
-                                form.append("questionReasons",$scope.industryList[i].solutions[j].questionReason);
-                                form.append("solutionId",$scope.industryList[i].solutions[j].solutionId);
-                                form.append("advise",$scope.industryList[i].solutions[j].advise);
-                                form.append("analysis",$scope.industryList[i].solutions[j].analysis);
-                                form.append("questionReasonFile",$scope.q1_file);
-                                form.append("adviseFile",$scope.ad1_file);
-                                form.append("analysisFile",$scope.an1_file);
-
-                                form.append("qTypes",$scope.industryList[i].solutions[j].questionReasonType);
-                                form.append("adTypes",$scope.industryList[i].solutions[j].adviseType);
-                                form.append("anTypes",$scope.industryList[i].solutions[j].analysisType);
-                        }                   
-                    }
-                }
-
-                    var xhr = new XMLHttpRequest();
-                    var response;
-                    xhr.open("post", modifyTopicUrl, true);
-                    xhr.send(form);
-                    xhr.onreadystatechange = doResult;
-                    function doResult() {
-                       
-                        if(xhr.readyState == 4  && xhr.status == 200){
-                             var response=JSON.parse(xhr.responseText);
-                             if (response.code==0) {
-                                $scope.showAlert("修改成功");
-                             }else{
-                                $scope.showAlert(response.message);
-                             }
-                            
-                        } 
-
-
-                 }
-                    // init();
-                    $scope.showAlert = function(txt) {
-
-                        $mdDialog.show(
-                            $mdDialog.alert()
-                            .clickOutsideToClose(false)
-                            .title(txt)
-                            .ok('确定')
-                            )
-
-                    }
-
-                })
-
-                        }
-      
 
         
 
@@ -1106,23 +813,16 @@ $scope.deleteList = function(){
         $scope.modifyNotice=function(){
                      // 确定
                     var confirm = $mdDialog.confirm()
-                    .title('是否确定修改模块信息')
+                    .title('是否确定修改消息')
                                 // .ariaLabel('Lucky day')
                                 // .targetEvent(ev)
                                 .ok('确定')
                                 .cancel('取消');
                                 $mdDialog.show(confirm).then(function() {
-            $http.post('http://localhost:8080/blue-server/' + 'module/modifyModule.do',{},{params:{
-                        moduleId:$scope.module.moduleId,
-                        moduleName:$scope.module.moduleName,
-                        description:$scope.module.description,
-                        highScoreMax:$scope.module.highScoreMax,
-                        highScoreMin:$scope.module.highScoreMin,
-                        mediumScoreMax:$scope.module.mediumScoreMax,
-                        mediumScoreMin:$scope.module.mediumScoreMin,
-                        lowScoreMax:$scope.module.lowScoreMax,
-                        lowScoreMin:$scope.module.lowScoreMin,
-
+            $http.post('http://localhost:8080/parking-server/' + 'message/modifyMessage.do',{},{params:{
+            id:$scope.noticeId,
+            content:$scope.notice.content,
+            title:$scope.notice.title
         }}).success( function (data){   
             if(data.code == 0){  //解除成功
                 $scope.showAlert("修改成功");
@@ -1172,29 +872,7 @@ $scope.deleteList = function(){
             $scope.backClick = function(){
                 $location.path("/notice/notice-list");
             }
-            $scope.showAlert = function(txt) {
 
-                        $mdDialog.show(
-                            $mdDialog.alert()
-                            .clickOutsideToClose(false)
-                            .title(txt)
-                            .ok('确定')
-                            )
-
-                    }
-
-            $scope.moduleId = $location.search().id;   //获取逝者id
-
-            $http.post("http://localhost:8080/blue-server/"+"industry/getIndustryList.do?",{},{params:{
-                        pageNum:1,
-                        pageSize:20
-                    }}).success(function (data){
-                        if(data.code == 0){
-                               $scope.industryList=data.result;
-                               console.log($scope.industryList);
-                        }
-
-                    });
 
 
             $scope.searchnotice=function(){
@@ -1202,7 +880,7 @@ $scope.deleteList = function(){
                     $scope.result=null;
                     return;
                 }
-                $http.post("http://localhost:8080/blue-server/"+"notice/getUserListByIdOrMobileOrName.do?",{},{params:{
+                $http.post("http://localhost:8080/parking-server/"+"notice/getUserListByIdOrMobileOrName.do?",{},{params:{
                         content:$scope.content
                     }}).success(function (data){
                         if(data.code == 0){
@@ -1241,7 +919,7 @@ $scope.deleteList = function(){
                 if ($scope.clicknoticeId==""||$scope.clicknoticeId==undefined) {
                     return;
                 }
-                $http.post("http://localhost:8080/blue-server/"+"notice/bindingUser.do?",{},{params:{
+                $http.post("http://localhost:8080/parking-server/"+"notice/bindingUser.do?",{},{params:{
                         noticeId:$scope.userId,
                         userId:$scope.clicknoticeId
                     }}).success(function (data){
@@ -1254,186 +932,6 @@ $scope.deleteList = function(){
 
                     });
             }
-
-
-        $scope.qflag="";
-        $scope.adflag="";
-        $scope.anflag="";
-        $scope.doUploadPhoto_q1 = function(element) {
-            $scope.q1_file = element.files[0];
-            $scope.qflag=$scope.qflag+"1,";
-            // console.log($scope.qflag+"-------------------");
-        }
-        $scope.doUploadPhoto_q2 = function(element) {
-            $scope.q2_file = element.files[0];
-            $scope.qflag=$scope.qflag+"2,";
-        }
-        $scope.doUploadPhoto_q3 = function(element) {
-            $scope.q3_file = element.files[0];
-            $scope.qflag=$scope.qflag+"3,";
-        }
-        $scope.doUploadPhoto_ad1 = function(element) {
-            $scope.ad1_file = element.files[0];
-            $scope.adflag=$scope.adflag+"1,";
-        }
-        $scope.doUploadPhoto_ad2 = function(element) {
-            $scope.ad2_file = element.files[0];
-            $scope.adflag=$scope.adflag+"2,";
-        }
-        $scope.doUploadPhoto_ad3 = function(element) {
-            $scope.ad3_file = element.files[0];
-            $scope.adflag=$scope.adflag+"3,";
-        }
-        $scope.doUploadPhoto_an1 = function(element) {
-            $scope.an1_file = element.files[0];
-            $scope.anflag=$scope.anflag+"1,";
-        }
-        $scope.doUploadPhoto_an2 = function(element) {
-            $scope.an2_file = element.files[0];
-            $scope.anflag=$scope.anflag+"2,";
-        }
-        $scope.doUploadPhoto_an3 = function(element) {
-            $scope.an3_file = element.files[0];
-            $scope.anflag=$scope.anflag+"3,";
-        }
-
-
-
-
-        $scope.addSolution = function(){
-
-
-                          // 确定
-                          var confirm = $mdDialog.confirm()
-                          .title('是否确定添加')
-                            // .ariaLabel('Lucky day')
-                            // .targetEvent(ev)
-                            .ok('确定添加')
-                            .cancel('取消添加');
-
-                            $mdDialog.show(confirm).then(function() {
-                    // console.log('确定')
-
-
-                var modifyTopicUrl ="http://localhost:8080/blue-server/"+"solution/addSolution.do";// 接收上传文件的后台地址
-                
-                if ($scope.q1==undefined||$scope.q1=="") {
-                    $scope.q1=="";
-                }
-
-                if ($scope.q2==undefined||$scope.q2=="") {
-                    $scope.q2=="";
-                }
-
-                if ($scope.q3==undefined||$scope.q3=="") {
-                    $scope.q3=="";
-                }
-
-                if ($scope.ad1==undefined||$scope.ad1=="") {
-                    console.log("ad1")
-                    $scope.ad1=="";
-                }
-
-                if ($scope.ad2==undefined||$scope.ad2=="") {
-                    console.log("ad2")
-                    $scope.ad2=="";
-                }
-
-                if ($scope.ad3==undefined||$scope.ad3=="") {
-                    console.log("ad3")
-                    $scope.ad3=="";
-                }
-
-                if ($scope.an1==undefined||$scope.an1=="") {
-                   $scope.an1=="";
-                }
-
-                if ($scope.an2==undefined||$scope.an2=="") {
-                    $scope.an2=="";
-                }
-
-                 if ($scope.an3==undefined||$scope.an3=="") {
-                    $scope.an3=="";
-                }
-                
-                var form = new FormData();
-                form.append("moduleId",$scope.moduleId);
-                form.append("industryId",$scope.industryId);
-                form.append("questionReasons",$scope.q1);
-                form.append("questionReasons",$scope.q2);
-                form.append("questionReasons",$scope.q3);
-                form.append("advise",$scope.ad1);
-                form.append("advise",$scope.ad2);
-                form.append("advise",$scope.ad3);
-                form.append("analysis",$scope.an1);
-                form.append("analysis",$scope.an2);
-                form.append("analysis",$scope.an3);
-                form.append("types","1");
-                form.append("types","2");
-                form.append("types","3");
-                form.append("questionReasonFiles",$scope.q1_file);
-                form.append("questionReasonFiles",$scope.q2_file);
-                form.append("questionReasonFiles",$scope.q3_file);
-                form.append("adviseFiles",$scope.ad1_file);
-                form.append("adviseFiles",$scope.ad2_file);
-                form.append("adviseFiles",$scope.ad3_file);
-                form.append("analysisFiles",$scope.an1_file);
-                form.append("analysisFiles",$scope.an2_file);
-                form.append("analysisFiles",$scope.an3_file);
-
-                form.append("qFlag",$scope.qflag);
-                 form.append("adFlag",$scope.adflag);
-                  form.append("anFlag",$scope.anflag);
-
-                  // form.append("qTypes",$scope.q1_type);
-                  // form.append("qTypes",$scope.q2_type);
-                  // form.append("qTypes",$scope.q3_type);
-
-                  // form.append("adTypes",$scope.ad1_type);
-                  // form.append("adTypes",$scope.ad2_type);
-                  // form.append("adTypes",$scope.ad3_type);
-
-                  // form.append("anTypes",$scope.an1_type);
-                  // form.append("anTypes",$scope.an2_type);
-                  // form.append("anTypes",$scope.an3_type);
-
-
-                    var xhr = new XMLHttpRequest();
-                    var response;
-                    xhr.open("post", modifyTopicUrl, true);
-                    xhr.send(form);
-                    xhr.onreadystatechange = doResult;
-                    function doResult() {
-                       
-                        if(xhr.readyState == 4  && xhr.status == 200){
-                             var response=JSON.parse(xhr.responseText);
-                             if (response.code==0) {
-                                $scope.showAlert("添加成功");
-                             }else{
-                                $scope.showAlert(response.message);
-                             }
-                            
-                        } 
-
-
-                 }
-                    // init();
-                    $scope.showAlert = function(txt) {
-
-                        $mdDialog.show(
-                            $mdDialog.alert()
-                            .clickOutsideToClose(false)
-                            .title(txt)
-                            .ok('确定')
-                            )
-
-                    }
-
-                })
-
-                        }
-
-
 
 
         }
@@ -1473,7 +971,7 @@ $scope.deleteList = function(){
 
             // //指定上传的文件名，这里必须和后端代码对应
             // editor.customConfig.uploadFileName = 'myFile'
-            // editor.customConfig.uploadImgServer = "http://localhost:8080/blue-server/notice/uploadImage.do"  // 上传图片到服务器
+            // editor.customConfig.uploadImgServer = "http://localhost:8080/parking-server/notice/uploadImage.do"  // 上传图片到服务器
 
             // // editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
             
@@ -1494,7 +992,7 @@ $scope.deleteList = function(){
         var authoritySet = sessionStorage.authoritySet.split(',');
         //控制权限，如果没有这个权限，不显示
         for (var i = 0; i < authoritySet.length; i++) {
-            if (authoritySet[i] == "40") {
+            if (authoritySet[i] == "54") {
                 $scope.isShow = 1;
             }
         }
@@ -1519,27 +1017,24 @@ $scope.deleteList = function(){
             $location.path("/notice/notice-list");
         }
 
-        $scope.showAddSolution=0;  //显示添加解决方案的按钮
 
         //发布公告
         $scope.addnotice=function(){
-            $http.post("http://localhost:8080/blue-server/"+"module/addModule.do",{},{params:{
-                        moduleName:$scope.moduleName,
-                        description:$scope.description,
-                        highScoreMax:$scope.highScoreMax,
-                        highScoreMin:$scope.highScoreMin,
-                        mediumScoreMax:$scope.mediumScoreMax,
-                        mediumScoreMin:$scope.mediumScoreMin,
-                        lowScoreMax:$scope.lowScoreMax,
-                        lowScoreMin:$scope.lowScoreMin,
+            // alert(editor.txt.html());
+            // alert(editor.txt.text());
+            // var content=editor.txt.text();  //文本内容
+            // var html=editor.txt.html();  //html内容
+
+            $http.post("http://localhost:8080/parking-server/"+"message/addMessage.do",{},{params:{
+                        title:$scope.title,
+                        content:$scope.content,
                     }}).success(function (data){
                         if(data.code == 0){
-                            $scope.module=data.result;
-                            $scope.showAddSolution=1;  //显示添加按钮
-                           $scope.showAlert("添加成功");
+                           $scope.showAlert("发布成功");
                         }else{
-                            $scope.showAlert("添加失败");
+                            $scope.showAlert("发布失败");
                         }
+
                     });
 
 

@@ -14,42 +14,27 @@
                             <div layout="column" ng-cloak class="md-inline-form inputdemoBasicUsage">
                                 <md-content layout-padding>
                                     <form name="userForm">
-
-                                         <div class="form-group clearfix" ng-show="selectShow==0">
-                                            <label for="" class="col-sm-3 control-label">应用名称：</label>
-                                            <div class="col-sm-7">
-                                                <input class="form-control" value="{{app.name}}" />
-                                            </div>
-
-                                            <div class="col-sm-2">
-                                                <button class="btn btn-danger" ng-click="modApp()">修改应用名称</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group clearfix" ng-show="selectShow==1">
-                                          <label for="" class="col-sm-3 control-label">应用名称：</label>
-                                          <div class="col-sm-9">
-                                              <input class="form-control" class="userId" ng-model="appName" ng-change="searchApp()" style="width: 300px;font-size: 10px;" placeholder="通过应用名称搜索">
-
-                                              <ul style="overflow: auto;width: 300px;height: 100px" ng-if="searchShow==1">
-                                                <li ng-repeat="app in appInfo" id="app-{{app.appId}}" ng-click="clickContent(app.appId)" ng-mouseover="mouseOver(app.appId)" ng-mouseleave="mouseLeave(app.appId)">{{app.name}}</li>
-                                              </ul>
-                                          </div>
-                                        </div>
-
-                                        <div class="form-group clearfix">
-                                            <label for="" class="col-sm-3 control-label">位置：</label>
+<div class="form-group clearfix">
+                                            <label for="" class="col-sm-3 control-label">标题：</label>
                                             <div class="col-sm-9">
-                                                <select class="form-control" ng-model="banner.bannerLocation" >
-                                                    <option value="1" ng-selected="banner.bannerLocation==1">1</option>
-                                                    <option value="2" ng-selected="banner.bannerLocation==2">2</option>
-                                                    <option value="3" ng-selected="banner.bannerLocation==3">3</option>
-                                                    <option value="4" ng-selected="banner.bannerLocation==4">4</option>
-                                                    <option value="5" ng-selected="banner.bannerLocation==5">5</option>
+                                                <input type="text" class="form-control" ng-model="banner.title">
+                                            </div>
+                                        </div>
+
+                                        
+                                        
+                                        <div class="form-group clearfix">
+                                            <label for="" class="col-sm-3 control-label">顺序：</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" ng-model="banner.sortIndex" >
+                                                    <option value="1" ng-selected="banner.sortIndex==1">1</option>
+                                                    <option value="2" ng-selected="banner.sortIndex==2">2</option>
+                                                    <option value="3" ng-selected="banner.sortIndex==3">3</option>
+                                                    <option value="4" ng-selected="banner.sortIndex==4">4</option>
+                                                    <option value="5" ng-selected="banner.sortIndex==5">5</option>
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="form-group clearfix">
                                             <label for="" class="col-sm-3 control-label">上传图片：</label>
                                             <div class="col-sm-9">

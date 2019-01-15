@@ -1,6 +1,6 @@
 
 <div class="page page-table" ng-controller="BannerCtrl">
-    <div class="row ui-section" ng-show="isShow==1">
+    <div class="row ui-section">
         <div class="col-md-12">
             <div class="col-md-6 clearfix">
                 <h2 class="section-header">
@@ -13,13 +13,18 @@
 
          <div class="row">
                     <label class="col-sm-3 col-xs-3">
-                        <span >平台:</span>
-                        
-                        <select  class="border-radius-5 border-default ml-10 input-default input-w-50" data-ng-model="platform" data-ng-change="search()">
+                        <span >状态:</span>
+                        <select  class="border-radius-5 border-default ml-10 input-default input-w-50" data-ng-model="activated" data-ng-change="search()">
                           <option value="">不限</option>
-                          <option value="1">移动应用Android</option>
-                          <option  value="2" >移动应用IOS</option>
+                          <option value="1">启动</option>
+                          <option  value="0" >禁用</option>
                         </select> 
+                    </label>
+
+
+                     <label class="col-sm-3 col-xs-3">
+                        <span >标题:</span>
+                        <input type="text" name="" class="border-radius-5 border-default ml-10 input-default input-w-50" data-ng-model="title" data-ng-change="search()">
                     </label>
         </div>
 
@@ -50,12 +55,12 @@
                             </th> -->
                             <th>
                                 <div class="th">
-                                    广告展示
+                                    标题
                                 </div>
                             </th>
                             <th>
                                 <div class="th">
-                                    广告位置
+                                    图片
                                 </div>
                             </th>
                             <th>
@@ -79,21 +84,16 @@
                     </thead>
 
                     <tbody>
-                        <tr class="delete-{{store.bannerId}}" data-ng-repeat="store in stores">
-                            <td ng-bind="store.bannerId"></td>
-<!-- 
-                            <td class="bannerlink">
-                                
-                                <p ng-if="store.bannerPageLocation==1">首页</p>
-                                <p ng-if="store.bannerPageLocation==2">专题页</p>
-
-                            </td> -->
+                        <tr class="delete-{{store.id}}" data-ng-repeat="store in stores">
+                            <td ng-bind="store.id"></td>
+                            <td ng-bind="store.title"></td>
+                            
 
                             <td class="bannerLink">
                                 <a href="{{store.imageUrl}}" target="_blank"><img src="{{store.imageUrl}}" style="height: 100px;width: 100px;"></a>
                             </td>
 
-                            <td ng-bind="store.bannerLocation"></td>
+                            
 
                             <td class="bannerlink">
                                 <p ng-if="store.activated==1">启用</p>
@@ -105,14 +105,14 @@
 
                                 <td class="opertation" nowrap="nowrap">
                                     
-                                    <a href="#/banner/banner-change?id={{store.bannerId}}">
+                                    <a href="#/banner/banner-change?id={{store.id}}">
                                         修改
                                     </a>
                                     <!-- <a href="" ng-click="topBanner(store.bannerId)">
                                         置顶
                                     </a> -->
 
-                                    <a href="" ng-click="deleteBanner(store.bannerId)">
+                                    <a href="" ng-click="deleteBanner(store.id)">
                                         删除
                                     </a>
                                 </td>
