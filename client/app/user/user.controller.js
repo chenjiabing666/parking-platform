@@ -2121,6 +2121,8 @@ $scope.deleteList = function(){
                 form.append("password",$scope.password);
                 form.append("money",$scope.money);
                 form.append("webSite",$scope.webSite);
+                form.append("longitude",$scope.longitude);
+                form.append("latitude",$scope.latitude);
                  form.append("total",$scope.total);
                   form.append("address",$scope.address);
                   form.append("yearMoney",$scope.yearMoney);
